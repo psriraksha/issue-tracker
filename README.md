@@ -27,7 +27,7 @@ A full-stack (MERN) issue tracking app with user and admin login, issue CRUD, as
 | Comment | On issues they can see | On any issue |
 | Dashboard counts | Own issues | All issues |
 
-Notes: an issue can only be given to a registered (non-admin) user or left unassigned. A user who is only the assignee (did not file the issue) can view and comment, but cannot edit or delete it. Requesting an issue you cannot see returns `404`.
+Notes: an issue can only be given to a registered (non-admin) user or left unassigned. A user who is only the assignee (did not file the issue) can view and comment, but cannot edit or delete it. Requesting an issue you cannot see returns `404`. A newly registered user has filed no issues and been assigned none yet, so every dashboard count (total, per status, assigned to me, unassigned) starts at 0; counts update as soon as they create or are assigned an issue.
 
 ## Architecture
 ```
