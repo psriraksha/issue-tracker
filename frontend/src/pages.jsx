@@ -7,6 +7,41 @@ const STATUSES = ['Open', 'In Progress', 'Closed'];
 const msg = e => e.response?.data?.message || 'Something went wrong';
 const Badge = ({ s }) => <span className={'badge ' + s.replace(' ', '')}>{s}</span>;
 
+/* Split screen for Login / Register: Issue Tracker info on the left, form on the right */
+function AuthShell({ children }) {
+  const feats = [
+    ['📝', 'Report issues', 'Log bugs and tasks in seconds'],
+    ['👥', 'Assign to your team', 'Everyone knows what they own'],
+    ['📊', 'Track progress', 'Open, In Progress and Closed at a glance'],
+  ];
+  return (<div className="split">
+    <aside className="split-info">
+      <div className="brand"><span className="logo">IT</span>Issue Tracker</div>
+      <h1>Find it. Fix it.<br />Track it.</h1>
+      <p className="lead">One simple place for your team to report, assign and close issues.</p>
+      <div className="feats">
+        {feats.map(([icon, title, desc]) => (
+          <div className="feat" key={title}>
+            <span className="ico">{icon}</span>
+            <div><b>{title}</b><span>{desc}</span></div>
+          </div>
+        ))}
+      </div>
+      <div className="mock">
+        <div className="mock-stats">
+          <div><b>12</b><span>Open</span></div>
+          <div><b>5</b><span>In Progress</span></div>
+          <div><b>28</b><span>Closed</span></div>
+        </div>
+        <div className="mock-row"><span>Login page error</span><Badge s="Open" /></div>
+        <div className="mock-row"><span>Fix dashboard count</span><Badge s="In Progress" /></div>
+        <div className="mock-row"><span>Update footer links</span><Badge s="Closed" /></div>
+      </div>
+    </aside>
+    <section className="split-form">{children}</section>
+  </div>);
+}
+
 export function Login({ admin }) {
   const { login } = useAuth(), nav = useNavigate();
   const [f, setF] = useState({ email: '', password: '' }), [err, setErr] = useState('');
@@ -15,13 +50,13 @@ export function Login({ admin }) {
     try { const { data } = await api.post(admin ? '/auth/admin-login' : '/auth/login', f); login(data); nav('/'); }
     catch (x) { setErr(msg(x)); }
   };
-  return (<form className="card auth" onSubmit={submit}>
+  return (<AuthShell><form className="card auth" onSubmit={submit}>
     <h2>{admin ? 'Admin Login' : 'User Login'}</h2>{err && <p className="err">{err}</p>}
     <input type="email" placeholder="Email" value={f.email} onChange={e => setF({ ...f, email: e.target.value })} required />
     <input type="password" placeholder="Password" value={f.password} onChange={e => setF({ ...f, password: e.target.value })} required />
     <button>Login</button>
     <p>{admin ? <Link to="/login">User login</Link> : <><Link to="/register">Register</Link> · <Link to="/admin-login">Admin login</Link></>}</p>
-  </form>);
+  </form></AuthShell>);
 }
 
 export function Register() {
@@ -32,13 +67,13 @@ export function Register() {
     try { const { data } = await api.post('/auth/register', f); login(data); nav('/'); } catch (x) { setErr(msg(x)); }
   };
   const set = k => e => setF({ ...f, [k]: e.target.value });
-  return (<form className="card auth" onSubmit={submit}>
+  return (<AuthShell><form className="card auth" onSubmit={submit}>
     <h2>Register</h2>{err && <p className="err">{err}</p>}
     <input placeholder="Name" value={f.name} onChange={set('name')} required />
     <input type="email" placeholder="Email" value={f.email} onChange={set('email')} required />
     <input type="password" placeholder="Password (min 6 chars)" value={f.password} onChange={set('password')} required minLength={6} />
     <button>Create account</button><p><Link to="/login">Already registered? Login</Link></p>
-  </form>);
+  </form></AuthShell>);
 }
 
 export function Dashboard() {
@@ -118,4 +153,3 @@ export function IssueDetail() {
     <form className="card" onSubmit={comment}><textarea rows={3} placeholder="Add a comment…" value={text} onChange={e => setText(e.target.value)} required /><button>Post comment</button></form>
   </>);
 }
-

@@ -8,7 +8,7 @@ export default function App() {
     {user && <nav><b>Issue Tracker</b><NavLink to="/" end>Dashboard</NavLink><NavLink to="/issues">Issues</NavLink>
       <span className="sp" /><span>{user.name} ({user.role})</span>
       <button onClick={() => { logout(); nav('/login'); }}>Logout</button></nav>}
-    <main><Routes>
+    <main className={user ? '' : 'wide'}><Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/admin-login" element={<Login admin />} />
       <Route path="/register" element={<Register />} />
