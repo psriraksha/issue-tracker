@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 import api from './api';
 import { useAuth } from './auth';
 
@@ -42,6 +42,7 @@ function AuthShell({ children }) {
   </div>);
 }
 
+/* One component for both logins: /login = User login, /admin-login = Admin login */
 export function Login({ admin }) {
   const { login } = useAuth(), nav = useNavigate();
   const [f, setF] = useState({ email: '', password: '' }), [err, setErr] = useState('');
@@ -54,8 +55,12 @@ export function Login({ admin }) {
     <h2>{admin ? 'Admin Login' : 'User Login'}</h2>{err && <p className="err">{err}</p>}
     <input type="email" placeholder="Email" value={f.email} onChange={e => setF({ ...f, email: e.target.value })} required />
     <input type="password" placeholder="Password" value={f.password} onChange={e => setF({ ...f, password: e.target.value })} required />
-    <button>Login</button>
-    <p>{admin ? <Link to="/login">User login</Link> : <><Link to="/register">Register</Link> · <Link to="/admin-login">Admin login</Link></>}</p>
+    <button>{admin ? 'Login as Admin' : 'Login'}</button>
+    <p className="alt">
+      {admin
+        ? <Link to="/login">← Back to User login</Link>
+        : <>New here? <Link to="/register">Register</Link> · <Link to="/admin-login">Admin login</Link></>}
+    </p>
   </form></AuthShell>);
 }
 

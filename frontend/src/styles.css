@@ -89,6 +89,13 @@ tbody tr:hover{background:var(--blue-soft)}
 .split-form .auth input{padding:11px 14px}
 .split-form .auth button{padding:11px}
 
+/* User / Admin switch on the login box */
+.tabs{display:flex;gap:4px;background:var(--blue-soft);border-radius:8px;padding:4px}
+.tabs a{flex:1;text-align:center;padding:9px;border-radius:6px;color:var(--blue);font-weight:600}
+.tabs a:hover{color:var(--blue);text-decoration:none;background:var(--blue-line)}
+.tabs a.active{background:var(--blue);color:var(--white)}
+.tabs a.active:hover{color:var(--white);background:var(--blue)}
+
 /* Responsive (phones and small tablets) */
 @media (max-width:800px){
   .split{flex-direction:column}
@@ -108,3 +115,5 @@ tbody tr:hover{background:var(--blue-soft)}
   table.card{display:block;overflow-x:auto;white-space:nowrap}
   .stat b{font-size:1.8rem}
 }
+/* Links at the bottom of the login box */
+.alt{margin-top:4px;padding-top:14px;border-top:1px solid var(--blue-line);text-align:center;font-size:.92rem;color:#475569}

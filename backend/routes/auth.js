@@ -13,11 +13,15 @@ r.post('/register', async (req, res, next) => {
     res.status(201).json({ token: sign(u), user: out(u) });
   } catch (e) { next(e); }
 });
+
+// admin = true  -> only admin accounts may log in
+// admin = false -> only normal users may log in
 const login = admin => async (req, res, next) => {
   try {
     const u = await User.findOne({ email: (req.body.email || '').toLowerCase() });
     if (!u || !(await bcrypt.compare(req.body.password || '', u.password))) return res.status(401).json({ message: 'Invalid credentials' });
     if (admin && u.role !== 'admin') return res.status(403).json({ message: 'Not an admin account' });
+    if (!admin && u.role === 'admin') return res.status(403).json({ message: 'Admins must use the Admin login' });
     res.json({ token: sign(u), user: out(u) });
   } catch (e) { next(e); }
 };
