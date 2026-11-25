@@ -2,9 +2,11 @@
 
 A full-stack (MERN) issue tracking app with user and admin login, issue CRUD, assignment, status tracking, comments and a dashboard.
 
-**Live URL (frontend):** `https://<your-app>.vercel.app`  
-**API URL (backend):** `https://<your-api>.onrender.com`  
-**GitHub:** `https://github.com/<your-username>/issue-tracker`
+**Live URL (frontend):** https://issue-tracker-nine-brown.vercel.app  
+**API URL (backend):** https://issue-tracker-xfli.onrender.com  
+**GitHub:** https://github.com/psriraksha/issue-tracker
+
+> Note: the backend is on a free Render plan, so the first request after a period of inactivity can take up to a minute.
 
 ## Features
 - User registration and login (JWT); separate **Admin login** page (admin account is seeded from env vars)

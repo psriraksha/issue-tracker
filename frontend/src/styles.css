@@ -60,6 +60,7 @@ tbody tr:hover{background:var(--blue-soft)}
 
 /* Messages */
 .err{color:var(--blue-dark);background:var(--blue-soft);border:1px solid var(--blue);border-radius:6px;padding:8px 12px;font-weight:500}
+
 /* Responsive (phones and small tablets) */
 @media (max-width:700px){
   nav{flex-wrap:wrap;padding:10px 12px}

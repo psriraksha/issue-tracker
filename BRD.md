@@ -35,6 +35,11 @@ Passwords hashed with bcrypt; JWT authentication (7-day expiry); input validatio
 React SPA → REST API (Express) → MongoDB Atlas. Stateless API; token stored in browser localStorage.
 
 ## 8. Deployment
+**Live links**
+- Frontend (Vercel): https://issue-tracker-nine-brown.vercel.app
+- Backend API (Render): https://issue-tracker-xfli.onrender.com
+- Source code (GitHub): https://github.com/psriraksha/issue-tracker
+
 **Hosting**
 - Database: MongoDB Atlas (free M0 cluster)
 - Backend: Render Web Service (Node)
@@ -47,9 +52,9 @@ React SPA → REST API (Express) → MongoDB Atlas. Stateless API; token stored 
 
 **Steps to deploy**
 1. *Database* – Create an Atlas cluster, add a database user, allow network access `0.0.0.0/0`, copy the connection string (include DB name `issue_tracker`).
-2. *Push code* – `git init && git add . && git commit -m "Issue tracker" && git remote add origin <repo-url> && git push -u origin main`.
+2. *Push code* – `git init && git add . && git commit -m "Issue tracker" && git branch -M main && git remote add origin <repo-url> && git push -u origin main`.
 3. *Backend (Render)* – New → Web Service → select repo. Root Directory `backend`, Build Command `npm install`, Start Command `npm start`. Add env vars: `MONGO_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `CLIENT_URL` (temporary `*`). Deploy and verify `https://<api>.onrender.com/api/health`.
-4. *Frontend (Vercel)* – New Project → select repo. Root Directory `frontend`, Framework Vite, add env var `VITE_API_URL=https://<api>.onrender.com`. Deploy (`vercel.json` handles SPA routing).
+4. *Frontend (Vercel)* – New Project → select repo. Root Directory `frontend`, Framework Vite, add env var `VITE_API_URL=https://<api>.onrender.com` (type Config). Deploy (`vercel.json` handles SPA routing). If the variable is added after a deploy, redeploy, because Vite reads it at build time.
 5. *CORS* – Set `CLIENT_URL` on Render to the Vercel URL and redeploy.
 6. *Verify* – Register a user, log in at `/admin-login`, create/assign an issue, comment, check the dashboard.
 
@@ -58,4 +63,4 @@ React SPA → REST API (Express) → MongoDB Atlas. Stateless API; token stored 
 **Notes:** Render free tier sleeps when idle (first request can take ~50 s). Never commit `.env` files.
 
 ## 9. Acceptance Criteria
-All FR1–FR8 work on the deployed URL; unauthorized API calls return 401/403; README and BRD allow another developer to run and deploy independently.
+All FR1–FR8 work on the deployed URL; unauthorized API calls return 401/403; README and BRD allow another developer to run and deploy the project independently.
