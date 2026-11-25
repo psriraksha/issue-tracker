@@ -9,8 +9,8 @@ In scope: authentication, issue management, assignment, status tracking, comment
 ## 3. User Roles
 | Role | Capabilities |
 |---|---|
-| User | Register/login, create, edit and delete own issues, view status and assignee, comment, view dashboard |
-| Admin | Create, edit and delete any issue; assign issues to users; update status (Open / In Progress / Closed); comment; dashboard with counts; sees which user created each issue in the issues list |
+| User | Register/login, create issues, edit and delete own issues, view issues filed by or assigned to them, choose who will solve an issue, comment, view dashboard counts for their own issues |
+| Admin | Sees all issues; edits and deletes any issue; changes status; dashboard counts for all issues |
 
 ## 4. Functional Requirements
 | ID | Requirement |
@@ -18,14 +18,15 @@ In scope: authentication, issue management, assignment, status tracking, comment
 | FR1 | Users can register and log in with email and password |
 | FR2 | Admin can log in through a dedicated admin login |
 | FR3 | Users can create, edit and delete issues (subject to permissions) |
-| FR4 | Only the admin can assign issues to registered users |
+| FR4 | Any user can choose who will solve an issue (a registered user, or none) when creating or editing their own issue; the admin can do this for any issue |
 | FR5 | Issue status is one of Open, In Progress, Closed; only the admin can change it, users can view it |
 | FR6 | Users can add comments to an issue; comments show author and time |
-| FR7 | Dashboard shows counts by status, total, assigned to me and unassigned |
+| FR7 | Dashboard shows counts by status, total, assigned to me and unassigned (a user's own issues only; the admin's cover all issues) |
 | FR8 | Issues can be searched by title and filtered by status / assignee |
+| FR9 | A user can see only the issues they filed or that are assigned to them; the admin can see all issues |
 
 ## 5. Non-Functional Requirements
-Passwords hashed with bcrypt; JWT authentication (7-day expiry); input validation and meaningful HTTP errors; CORS restricted to the deployed frontend; responsive UI.
+Passwords hashed with bcrypt; JWT authentication (7-day expiry); issue visibility enforced on the server (not only in the UI); input validation and meaningful HTTP errors; CORS restricted to the deployed frontend; responsive UI.
 
 ## 6. Data Model
 - **User**: name, email (unique), password (hash), role (user/admin)
@@ -56,11 +57,11 @@ React SPA → REST API (Express) → MongoDB Atlas. Stateless API; token stored 
 3. *Backend (Render)* – New → Web Service → select repo. Root Directory `backend`, Build Command `npm install`, Start Command `npm start`. Add env vars: `MONGO_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `CLIENT_URL` (temporary `*`). Deploy and verify `https://<api>.onrender.com/api/health`.
 4. *Frontend (Vercel)* – New Project → select repo. Root Directory `frontend`, Framework Vite, add env var `VITE_API_URL=https://<api>.onrender.com` (type Config). Deploy (`vercel.json` handles SPA routing). If the variable is added after a deploy, redeploy, because Vite reads it at build time.
 5. *CORS* – Set `CLIENT_URL` on Render to the Vercel URL and redeploy.
-6. *Verify* – Register a user, log in at `/admin-login`, create/assign an issue, comment, check the dashboard.
+6. *Verify* – Register a user, create an issue and choose who will solve it, comment, check the dashboard; then log in at `/admin-login`, confirm all issues are visible, change a status and check the dashboard counts.
 
 **Updating:** push to `main`; both platforms redeploy automatically. To change config, edit env vars and redeploy.
 
 **Notes:** Render free tier sleeps when idle (first request can take ~50 s). Never commit `.env` files.
 
 ## 9. Acceptance Criteria
-All FR1–FR8 work on the deployed URL; unauthorized API calls return 401/403; README and BRD allow another developer to run and deploy the project independently.
+All FR1–FR9 work on the deployed URL; unauthorized API calls return 401/403; README and BRD allow another developer to run and deploy the project independently.
